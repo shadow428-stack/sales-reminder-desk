@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Reminder Desk</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Sales Reminder Desk</p>
+        <h1>銷售紀錄查詢與回購週期提醒</h1>
+        <p class="intro">公司員工登入後即可查詢；只有管理者可匯入最新 Excel 明細。</p>
+      </div>
+      <div class="top-actions" id="authActions">
+        <button id="logoutBtn" class="ghost" type="button" hidden>登出</button>
+      </div>
+    </header>
+
+    <section class="auth-card" id="authCard">
+      <div>
+        <p class="section-label">Sign In</p>
+        <h2>登入公司系統</h2>
+        <p class="muted">帳號由管理者在 Firebase Authentication 建立與管理。</p>
+      </div>
+      <form id="loginForm" class="login-form">
+        <label>
+          Email
+          <input id="emailInput" type="email" autocomplete="username" required>
+        </label>
+        <label>
+          密碼
+          <input id="passwordInput" type="password" autocomplete="current-password" required>
+        </label>
+        <button type="submit">登入</button>
+        <p id="loginMessage" class="muted"></p>
+      </form>
+    </section>
+
+    <section class="import-card" id="adminImportCard" hidden>
+      <div>
+        <p class="section-label">Import</p>
+        <h2>管理者匯入資料</h2>
+        <p class="muted">每次匯入都會覆蓋目前員工查詢與提醒所使用的資料集。</p>
+      </div>
+      <div class="top-actions">
+        <label class="file-button">
+          匯入 Excel / CSV
+          <input id="excelInput" type="file" accept=".xlsx,.xls,.csv">
+        </label>
+      </div>
+    </section>
+
+    <section class="import-card">
+      <div>
+        <p class="section-label">Dataset</p>
+        <h2>目前資料狀態</h2>
+        <p class="muted">員工看到的資料，都以管理者最近一次匯入結果為準。</p>
+      </div>
+      <div class="import-status" id="importStatus">尚未登入。</div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <p class="section-label">Reminder</p>
+          <h2>客戶週期提醒</h2>
+        </div>
+      </div>
+
+      <div class="filters reminder-filters">
+        <label>
+          提醒月份
+          <input id="reminderMonth" type="month">
+        </label>
+        <label>
+          人員姓名
+          <input id="reminderOwnerFilter" type="text" placeholder="輸入業務姓名">
+        </label>
+      </div>
+
+      <div id="reminderList" class="stack-list"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <p class="section-label">Search</p>
+          <h2>銷售紀錄查詢</h2>
+        </div>
+      </div>
+
+      <div class="filters">
+        <label>
+          開始日期
+          <input id="startDateFilter" type="date">
+        </label>
+        <label>
+          結束日期
+          <input id="endDateFilter" type="date">
+        </label>
+        <label>
+          客戶全稱
+          <input id="customerFilter" type="text" placeholder="輸入客戶全稱">
+        </label>
+        <label>
+          品名規格
+          <input id="productFilter" type="text" placeholder="輸入品名規格">
+        </label>
+        <label>
+          人員姓名
+          <input id="ownerFilter" type="text" placeholder="輸入人員姓名">
+        </label>
+        <label>
+          區域名稱
+          <input id="areaFilter" type="text" placeholder="輸入區域名稱">
+        </label>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>日期</th>
+              <th>客戶全稱</th>
+              <th>品名規格</th>
+              <th>數量</th>
+              <th>原幣單價</th>
+              <th>總額</th>
+              <th>人員姓名</th>
+              <th>區域名稱</th>
+            </tr>
+          </thead>
+          <tbody id="recordsTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

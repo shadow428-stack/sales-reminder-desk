@@ -1,0 +1,262 @@
+:root {
+  --bg: #f5f1ea;
+  --panel: #fffdfa;
+  --ink: #1f2933;
+  --muted: #6b7280;
+  --line: #e7dfd3;
+  --accent: #9a5a2e;
+  --accent-soft: #f2e5d9;
+  --danger: #b42318;
+  --warn: #b7791f;
+  --ok: #2d6a4f;
+  --shadow: 0 14px 30px rgba(32, 24, 16, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI Variable", "Noto Sans TC", "PingFang TC", sans-serif;
+  color: var(--ink);
+  background: linear-gradient(180deg, #f7f3ec 0%, #f1ebe2 100%);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.app-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 28px 20px 40px;
+}
+
+.topbar,
+.panel-head {
+  display: grid;
+  gap: 16px;
+}
+
+.topbar {
+  grid-template-columns: 1fr auto;
+  align-items: end;
+}
+
+.eyebrow,
+.section-label {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+h1,
+h2 {
+  margin: 0;
+}
+
+.intro {
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+
+.top-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.file-button,
+button {
+  border: none;
+  border-radius: 999px;
+  padding: 11px 16px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.ghost {
+  background: #fff;
+  color: var(--accent);
+  border: 1px solid var(--line);
+}
+
+.file-button input {
+  display: none;
+}
+
+.import-card,
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.import-card {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.import-status {
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  line-height: 1.6;
+}
+
+.panel {
+  margin-top: 18px;
+}
+
+.panel-head {
+  grid-template-columns: 1fr;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.reminder-filters {
+  grid-template-columns: 220px 1fr 1fr;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  font-size: 0.94rem;
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 11px 12px;
+  background: #fff;
+}
+
+.stack-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.reminder-card {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.reminder-card h3,
+.reminder-card p {
+  margin: 0;
+}
+
+.meta-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  background: #f6efe6;
+  color: var(--accent);
+}
+
+.pill.danger {
+  background: #fce9e7;
+  color: var(--danger);
+}
+
+.pill.warn {
+  background: #fbf1de;
+  color: var(--warn);
+}
+
+.pill.ok {
+  background: #e8f4ee;
+  color: var(--ok);
+}
+
+.table-wrap {
+  margin-top: 16px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+thead th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.empty-state {
+  padding: 20px;
+  text-align: center;
+  color: var(--muted);
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+}
+
+@media (max-width: 1100px) {
+  .topbar,
+  .import-card,
+  .filters,
+  .reminder-filters {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .app-shell {
+    padding: 20px 14px 32px;
+  }
+
+  .top-actions {
+    width: 100%;
+  }
+
+  .file-button,
+  button {
+    width: 100%;
+    text-align: center;
+  }
+}
