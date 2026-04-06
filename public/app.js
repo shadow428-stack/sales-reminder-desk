@@ -43,7 +43,6 @@ const productFilter = document.querySelector("#productFilter");
 const ownerFilter = document.querySelector("#ownerFilter");
 const areaFilter = document.querySelector("#areaFilter");
 const recordsTableBody = document.querySelector("#recordsTableBody");
-const recordsCardList = document.querySelector("#recordsCardList");
 
 const tabButtons = Array.from(document.querySelectorAll("[data-tab-target]"));
 const tabPanels = Array.from(document.querySelectorAll("[data-tab-panel]"));
@@ -194,6 +193,11 @@ function renderReminders() {
     return;
   }
 
+  if (!reminderOwnerFilter.value.trim()) {
+    reminderList.innerHTML = '<div class="empty-state">請先輸入人員姓名，再顯示週期提醒。</div>';
+    return;
+  }
+
   const customerGroups = getGroupedReminderItems();
   if (!customerGroups.length) {
     reminderList.innerHTML = '<div class="empty-state">目前沒有符合條件的週期提醒。</div>';
@@ -333,23 +337,10 @@ function renderRecords() {
     </tr>
   `).join("");
 
-  recordsCardList.innerHTML = rows.map((row) => `
-    <article class="record-item">
-      <div class="record-item-head">
-        <strong>${formatDate(row[COLUMN_DATE])}</strong>
-        <span>${escapeHtml(row[COLUMN_CUSTOMER])}</span>
-      </div>
-      <p class="record-item-product">${escapeHtml(row[COLUMN_PRODUCT])}</p>
-      <p class="record-item-meta">數量 ${formatNumber(row[COLUMN_QTY])} / 單價 ${formatNumber(row[COLUMN_PRICE])}</p>
-      <p class="record-item-meta">總額 ${formatCurrency(row[COLUMN_AMOUNT])}</p>
-      <p class="record-item-meta">人員 ${escapeHtml(row[COLUMN_OWNER])} / 區域 ${escapeHtml(row[COLUMN_AREA])}</p>
-    </article>
-  `).join("");
 }
 
 function setRecordsEmptyState(message) {
   recordsTableBody.innerHTML = `<tr><td colspan="8"><div class="empty-state">${message}</div></td></tr>`;
-  recordsCardList.innerHTML = `<div class="empty-state">${message}</div>`;
 }
 
 function getFilteredRows() {

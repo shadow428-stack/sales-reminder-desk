@@ -237,41 +237,6 @@ input {
   overflow: auto;
 }
 
-.records-list {
-  display: none;
-  margin-top: 16px;
-  gap: 12px;
-}
-
-.record-item {
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.record-item:first-child {
-  padding-top: 0;
-}
-
-.record-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.record-item-head {
-  display: grid;
-  gap: 4px;
-}
-
-.record-item-product {
-  margin: 8px 0 0;
-  font-weight: 600;
-}
-
-.record-item-meta {
-  margin: 6px 0 0;
-  color: var(--muted);
-}
-
 table {
   width: 100%;
   min-width: 980px;
@@ -336,13 +301,5 @@ thead th {
 
   .sheet-tab {
     padding: 13px 12px;
-  }
-
-  .table-wrap {
-    display: none;
-  }
-
-  .records-list {
-    display: grid;
   }
 }
