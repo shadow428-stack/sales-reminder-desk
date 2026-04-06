@@ -98,15 +98,7 @@
         </div>
       </div>
 
-      <div class="filters">
-        <label>
-          開始日期
-          <input id="startDateFilter" type="date">
-        </label>
-        <label>
-          結束日期
-          <input id="endDateFilter" type="date">
-        </label>
+      <div class="filters primary-filters">
         <label>
           客戶全稱
           <input id="customerFilter" type="text" placeholder="輸入客戶全稱">
@@ -119,11 +111,25 @@
           人員姓名
           <input id="ownerFilter" type="text" placeholder="輸入人員姓名">
         </label>
-        <label>
-          區域名稱
-          <input id="areaFilter" type="text" placeholder="輸入區域名稱">
-        </label>
       </div>
+
+      <details class="advanced-filters">
+        <summary>進階篩選</summary>
+        <div class="filters secondary-filters">
+          <label>
+            開始日期
+            <input id="startDateFilter" type="date">
+          </label>
+          <label>
+            結束日期
+            <input id="endDateFilter" type="date">
+          </label>
+          <label>
+            區域名稱
+            <input id="areaFilter" type="text" placeholder="輸入區域名稱">
+          </label>
+        </div>
+      </details>
 
       <div class="table-wrap">
         <table>
