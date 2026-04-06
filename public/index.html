@@ -21,40 +21,6 @@
       </div>
     </header>
 
-    <section class="auth-card utility-panel" id="authCard" hidden>
-      <div>
-        <p class="section-label">Sign In</p>
-        <h2>登入系統</h2>
-        <p class="muted">請使用你在 Firebase Authentication 建立的公司帳號登入。</p>
-      </div>
-      <form id="loginForm" class="login-form">
-        <label>
-          Email
-          <input id="emailInput" type="email" autocomplete="username" required>
-        </label>
-        <label>
-          密碼
-          <input id="passwordInput" type="password" autocomplete="current-password" required>
-        </label>
-        <button type="submit">登入</button>
-        <p id="loginMessage" class="muted"></p>
-      </form>
-    </section>
-
-    <section class="import-card utility-panel" id="adminImportCard" hidden>
-      <div>
-        <p class="section-label">Import</p>
-        <h2>管理者資料匯入</h2>
-        <p class="muted">只有管理者可以匯入 Excel 或 CSV。每次匯入都會覆蓋目前系統顯示的資料版本。</p>
-      </div>
-      <div class="top-actions">
-        <label class="file-button">
-          匯入 Excel / CSV
-          <input id="excelInput" type="file" accept=".xlsx,.xls,.csv">
-        </label>
-      </div>
-    </section>
-
     <section class="import-card">
       <div>
         <p class="section-label">Dataset</p>
@@ -152,6 +118,44 @@
       </div>
     </section>
   </div>
+
+  <div id="modalBackdrop" class="modal-backdrop" hidden></div>
+
+  <section class="modal-card" id="authCard" hidden aria-modal="true" role="dialog" aria-labelledby="authTitle">
+    <button id="authCloseBtn" class="modal-close" type="button" aria-label="關閉登入視窗">×</button>
+    <div>
+      <p class="section-label">Sign In</p>
+      <h2 id="authTitle">登入系統</h2>
+      <p class="muted">請使用你在 Firebase Authentication 建立的公司帳號登入。</p>
+    </div>
+    <form id="loginForm" class="login-form">
+      <label>
+        Email
+        <input id="emailInput" type="email" autocomplete="username" required>
+      </label>
+      <label>
+        密碼
+        <input id="passwordInput" type="password" autocomplete="current-password" required>
+      </label>
+      <button type="submit">登入</button>
+      <p id="loginMessage" class="muted"></p>
+    </form>
+  </section>
+
+  <section class="modal-card" id="adminImportCard" hidden aria-modal="true" role="dialog" aria-labelledby="importTitle">
+    <button id="importCloseBtn" class="modal-close" type="button" aria-label="關閉匯入視窗">×</button>
+    <div>
+      <p class="section-label">Import</p>
+      <h2 id="importTitle">管理者資料匯入</h2>
+      <p class="muted">只有管理者可以匯入 Excel 或 CSV。每次匯入都會覆蓋目前系統顯示的資料版本。</p>
+    </div>
+    <div class="top-actions">
+      <label class="file-button">
+        匯入 Excel / CSV
+        <input id="excelInput" type="file" accept=".xlsx,.xls,.csv">
+      </label>
+    </div>
+  </section>
 
   <script type="module" src="app.js"></script>
 </body>

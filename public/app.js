@@ -24,9 +24,12 @@ let dataset = { sourceLabel: "", importedAt: "", importedBy: "", rows: [] };
 
 const authCard = document.querySelector("#authCard");
 const adminImportCard = document.querySelector("#adminImportCard");
+const modalBackdrop = document.querySelector("#modalBackdrop");
 const importStatus = document.querySelector("#importStatus");
 const loginToggleBtn = document.querySelector("#loginToggleBtn");
 const importToggleBtn = document.querySelector("#importToggleBtn");
+const authCloseBtn = document.querySelector("#authCloseBtn");
+const importCloseBtn = document.querySelector("#importCloseBtn");
 const loginForm = document.querySelector("#loginForm");
 const emailInput = document.querySelector("#emailInput");
 const passwordInput = document.querySelector("#passwordInput");
@@ -88,6 +91,9 @@ async function bootstrap() {
 function bindEvents() {
   loginToggleBtn.addEventListener("click", toggleAuthPanel);
   importToggleBtn.addEventListener("click", toggleImportPanel);
+  authCloseBtn.addEventListener("click", closePanels);
+  importCloseBtn.addEventListener("click", closePanels);
+  modalBackdrop.addEventListener("click", closePanels);
   loginForm.addEventListener("submit", handleLogin);
   logoutBtn.addEventListener("click", handleLogout);
   excelInput.addEventListener("change", handleImport);
@@ -129,15 +135,14 @@ async function handleLogin(event) {
     await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
     loginMessage.textContent = "";
     loginForm.reset();
-    authCard.hidden = true;
+    closePanels();
   } catch (error) {
     loginMessage.textContent = `登入失敗：${error.message}`;
   }
 }
 
 async function handleLogout() {
-  authCard.hidden = true;
-  adminImportCard.hidden = true;
+  closePanels();
   await signOut(auth);
 }
 
@@ -152,19 +157,29 @@ async function refreshSession() {
 }
 
 function toggleAuthPanel() {
-  authCard.hidden = !authCard.hidden;
-  if (!authCard.hidden) {
-    adminImportCard.hidden = true;
+  const shouldOpen = authCard.hidden;
+  closePanels();
+  if (shouldOpen) {
+    authCard.hidden = false;
+    modalBackdrop.hidden = false;
     emailInput.focus();
   }
 }
 
 function toggleImportPanel() {
   if (currentRole !== "admin") return;
-  adminImportCard.hidden = !adminImportCard.hidden;
-  if (!adminImportCard.hidden) {
-    authCard.hidden = true;
+  const shouldOpen = adminImportCard.hidden;
+  closePanels();
+  if (shouldOpen) {
+    adminImportCard.hidden = false;
+    modalBackdrop.hidden = false;
   }
+}
+
+function closePanels() {
+  authCard.hidden = true;
+  adminImportCard.hidden = true;
+  modalBackdrop.hidden = true;
 }
 
 async function loadDataset() {
