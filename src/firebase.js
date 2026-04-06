@@ -16,6 +16,11 @@ function getApp() {
   return app;
 }
 
+export function getFirestore() {
+  getApp();
+  return admin.firestore();
+}
+
 export async function verifyFirebaseToken(token) {
   getApp();
   return admin.auth().verifyIdToken(token);
