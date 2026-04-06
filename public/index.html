@@ -11,10 +11,10 @@
     <header class="topbar">
       <div>
         <p class="eyebrow">Sales Reminder Desk</p>
-        <h1>銷售紀錄查詢與回購週期提醒</h1>
-        <p class="intro">公司員工登入後即可查詢；只有管理者可匯入最新 Excel 明細。</p>
+        <h1>銷售紀錄查詢與客戶週期提醒</h1>
+        <p class="intro">登入後可查詢銷售紀錄，並依 Excel 匯入資料查看重複回購客戶的週期提醒。</p>
       </div>
-      <div class="top-actions" id="authActions">
+      <div class="top-actions">
         <button id="logoutBtn" class="ghost" type="button" hidden>登出</button>
       </div>
     </header>
@@ -22,8 +22,8 @@
     <section class="auth-card" id="authCard">
       <div>
         <p class="section-label">Sign In</p>
-        <h2>登入公司系統</h2>
-        <p class="muted">帳號由管理者在 Firebase Authentication 建立與管理。</p>
+        <h2>登入系統</h2>
+        <p class="muted">請使用你在 Firebase Authentication 建立的公司帳號登入。</p>
       </div>
       <form id="loginForm" class="login-form">
         <label>
@@ -42,8 +42,8 @@
     <section class="import-card" id="adminImportCard" hidden>
       <div>
         <p class="section-label">Import</p>
-        <h2>管理者匯入資料</h2>
-        <p class="muted">每次匯入都會覆蓋目前員工查詢與提醒所使用的資料集。</p>
+        <h2>管理者資料匯入</h2>
+        <p class="muted">只有管理者可以匯入 Excel 或 CSV。每次匯入都會覆蓋目前系統顯示的資料版本。</p>
       </div>
       <div class="top-actions">
         <label class="file-button">
@@ -57,12 +57,17 @@
       <div>
         <p class="section-label">Dataset</p>
         <h2>目前資料狀態</h2>
-        <p class="muted">員工看到的資料，都以管理者最近一次匯入結果為準。</p>
+        <p class="muted">顯示目前系統使用中的檔案、匯入時間與匯入者，讓大家知道現在看到的是哪一版資料。</p>
       </div>
-      <div class="import-status" id="importStatus">尚未登入。</div>
+      <div class="import-status" id="importStatus">請先登入系統。</div>
     </section>
 
-    <section class="panel">
+    <nav class="sheet-tabs" aria-label="功能分頁">
+      <button type="button" class="sheet-tab is-active" data-tab-target="reminderPanel">週期提醒</button>
+      <button type="button" class="sheet-tab" data-tab-target="recordsPanel">銷售紀錄查詢</button>
+    </nav>
+
+    <section class="panel tab-panel is-active" id="reminderPanel" data-tab-panel>
       <div class="panel-head">
         <div>
           <p class="section-label">Reminder</p>
@@ -84,7 +89,7 @@
       <div id="reminderList" class="stack-list"></div>
     </section>
 
-    <section class="panel">
+    <section class="panel tab-panel" id="recordsPanel" data-tab-panel hidden>
       <div class="panel-head">
         <div>
           <p class="section-label">Search</p>

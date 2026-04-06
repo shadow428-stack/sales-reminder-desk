@@ -14,10 +14,12 @@ const COLUMN_PRICE = "原幣單價";
 const COLUMN_AMOUNT = "總額";
 const COLUMN_OWNER = "人員姓名";
 const COLUMN_AREA = "區域名稱";
+const MAX_OVERDUE_MONTHS = 6;
 
 let auth;
 let currentUser = null;
 let currentRole = "viewer";
+let activeTab = "reminderPanel";
 let dataset = { sourceLabel: "", importedAt: "", importedBy: "", rows: [] };
 
 const authCard = document.querySelector("#authCard");
@@ -42,11 +44,15 @@ const ownerFilter = document.querySelector("#ownerFilter");
 const areaFilter = document.querySelector("#areaFilter");
 const recordsTableBody = document.querySelector("#recordsTableBody");
 
+const tabButtons = Array.from(document.querySelectorAll("[data-tab-target]"));
+const tabPanels = Array.from(document.querySelectorAll("[data-tab-panel]"));
+
 bootstrap();
 
 async function bootstrap() {
   reminderMonth.value = todayMonthString();
   bindEvents();
+  applyTabState();
 
   const configResponse = await fetch("/api/config");
   const config = await configResponse.json();
@@ -61,7 +67,7 @@ async function bootstrap() {
       adminImportCard.hidden = true;
       logoutBtn.hidden = true;
       dataset = { sourceLabel: "", importedAt: "", importedBy: "", rows: [] };
-      importStatus.textContent = "尚未登入。";
+      importStatus.textContent = "請先登入系統。";
       render();
       return;
     }
@@ -79,6 +85,13 @@ function bindEvents() {
   logoutBtn.addEventListener("click", handleLogout);
   excelInput.addEventListener("change", handleImport);
 
+  for (const button of tabButtons) {
+    button.addEventListener("click", () => {
+      activeTab = button.dataset.tabTarget;
+      applyTabState();
+    });
+  }
+
   [reminderMonth, reminderOwnerFilter].forEach((element) => {
     element.addEventListener("input", renderReminders);
     element.addEventListener("change", renderReminders);
@@ -88,6 +101,18 @@ function bindEvents() {
     element.addEventListener("input", renderRecords);
     element.addEventListener("change", renderRecords);
   });
+}
+
+function applyTabState() {
+  for (const button of tabButtons) {
+    button.classList.toggle("is-active", button.dataset.tabTarget === activeTab);
+  }
+
+  for (const panel of tabPanels) {
+    const isActive = panel.id === activeTab;
+    panel.hidden = !isActive;
+    panel.classList.toggle("is-active", isActive);
+  }
 }
 
 async function handleLogin(event) {
@@ -118,7 +143,7 @@ async function loadDataset() {
   dataset = await response.json();
   importStatus.textContent = dataset.sourceLabel
     ? `目前資料：${dataset.sourceLabel} / 匯入者：${dataset.importedBy || "-"} / 匯入時間：${formatDateTime(dataset.importedAt)}`
-    : "目前尚未有匯入資料。";
+    : "目前尚未匯入資料。";
 }
 
 async function handleImport(event) {
@@ -164,29 +189,29 @@ function render() {
 
 function renderReminders() {
   if (!currentUser) {
-    reminderList.innerHTML = '<div class="empty-state">登入後可查看回購週期提醒。</div>';
+    reminderList.innerHTML = '<div class="empty-state">登入後即可查看客戶週期提醒。</div>';
     return;
   }
 
   const customerGroups = getGroupedReminderItems();
   if (!customerGroups.length) {
-    reminderList.innerHTML = '<div class="empty-state">該月份目前沒有符合條件的重複回購提醒。</div>';
+    reminderList.innerHTML = '<div class="empty-state">目前沒有符合條件的週期提醒。</div>';
     return;
   }
 
   reminderList.innerHTML = customerGroups.map((group) => `
     <article class="reminder-card">
       <h3>${escapeHtml(group.customer)}</h3>
-      <p class="muted">本月需注意 ${group.items.length} 個重複回購品項</p>
+      <p class="muted">共 ${group.items.length} 個品項需要留意</p>
       ${group.items.map((item) => `
         <div class="meta-row" style="margin-top:10px;">
           <span class="pill ${item.badgeClass}">${item.statusLabel}</span>
           <span class="pill">${escapeHtml(item.product)}</span>
-          <span class="pill">平均週期：約 ${item.avgCycleMonths} 個月</span>
-          <span class="pill">應回購月：${item.expectedMonth}</span>
+          <span class="pill">平均週期 ${item.avgCycleMonths} 個月</span>
+          <span class="pill">應回購月份 ${item.expectedMonth}</span>
         </div>
         <p class="muted" style="margin-top:8px;">
-          最近購買：${formatDate(item.lastDate)} / 歷次購買：${item.purchaseCount} 次 / 平均間隔：${item.avgCycleDays} 天 / 業務：${escapeHtml(item.owner || "-")} / 區域：${escapeHtml(item.area || "-")}
+          最近購買：${formatDate(item.lastDate)} / 歷次購買 ${item.purchaseCount} 筆 / 平均間隔 ${item.avgCycleDays} 天 / 人員：${escapeHtml(item.owner || "-")} / 區域：${escapeHtml(item.area || "-")}
         </p>
       `).join("")}
     </article>
@@ -252,7 +277,7 @@ function buildReminderItem(rows, selectedMonth) {
   if (expectedMonth > selectedMonth) return null;
 
   const statusMonthDiff = diffInMonths(expectedMonth, selectedMonth);
-  if (statusMonthDiff > 12) return null;
+  if (statusMonthDiff > MAX_OVERDUE_MONTHS) return null;
 
   return {
     customer: last[COLUMN_CUSTOMER],
@@ -265,13 +290,13 @@ function buildReminderItem(rows, selectedMonth) {
     owner: last[COLUMN_OWNER],
     area: last[COLUMN_AREA],
     badgeClass: statusMonthDiff > 0 ? "danger" : "warn",
-    statusLabel: statusMonthDiff > 0 ? `已逾期 ${statusMonthDiff} 個月` : "本月應回購",
+    statusLabel: statusMonthDiff > 0 ? `逾期 ${statusMonthDiff} 個月` : "本月提醒",
   };
 }
 
 function renderRecords() {
   if (!currentUser) {
-    recordsTableBody.innerHTML = '<tr><td colspan="8"><div class="empty-state">登入後可查詢銷售紀錄。</div></td></tr>';
+    recordsTableBody.innerHTML = '<tr><td colspan="8"><div class="empty-state">登入後即可查詢銷售紀錄。</div></td></tr>';
     return;
   }
 
@@ -284,13 +309,13 @@ function renderRecords() {
     Boolean(areaFilter.value.trim());
 
   if (!hasQuery) {
-    recordsTableBody.innerHTML = '<tr><td colspan="8"><div class="empty-state">請先輸入查詢條件，再顯示銷售紀錄。</div></td></tr>';
+    recordsTableBody.innerHTML = '<tr><td colspan="8"><div class="empty-state">請先輸入任一查詢條件，再顯示銷售紀錄。</div></td></tr>';
     return;
   }
 
   const rows = getFilteredRows();
   if (!rows.length) {
-    recordsTableBody.innerHTML = '<tr><td colspan="8"><div class="empty-state">查無符合條件的銷售紀錄。</div></td></tr>';
+    recordsTableBody.innerHTML = '<tr><td colspan="8"><div class="empty-state">查無符合條件的資料。</div></td></tr>';
     return;
   }
 
@@ -317,10 +342,10 @@ function getFilteredRows() {
   return [...dataset.rows]
     .filter((row) => !startDateFilter.value || row[COLUMN_DATE] >= startDateFilter.value)
     .filter((row) => !endDateFilter.value || row[COLUMN_DATE] <= endDateFilter.value)
-    .filter((row) => !customerKeyword || row[COLUMN_CUSTOMER].toLowerCase().includes(customerKeyword))
-    .filter((row) => !productKeyword || row[COLUMN_PRODUCT].toLowerCase().includes(productKeyword))
-    .filter((row) => !ownerKeyword || row[COLUMN_OWNER].toLowerCase().includes(ownerKeyword))
-    .filter((row) => !areaKeyword || row[COLUMN_AREA].toLowerCase().includes(areaKeyword))
+    .filter((row) => !customerKeyword || String(row[COLUMN_CUSTOMER] || "").toLowerCase().includes(customerKeyword))
+    .filter((row) => !productKeyword || String(row[COLUMN_PRODUCT] || "").toLowerCase().includes(productKeyword))
+    .filter((row) => !ownerKeyword || String(row[COLUMN_OWNER] || "").toLowerCase().includes(ownerKeyword))
+    .filter((row) => !areaKeyword || String(row[COLUMN_AREA] || "").toLowerCase().includes(areaKeyword))
     .sort((a, b) => new Date(b[COLUMN_DATE]) - new Date(a[COLUMN_DATE]));
 }
 
