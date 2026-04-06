@@ -334,19 +334,15 @@ function renderRecords() {
   `).join("");
 
   recordsCardList.innerHTML = rows.map((row) => `
-    <article class="record-card">
-      <div class="record-card-head">
-        <strong>${escapeHtml(row[COLUMN_CUSTOMER])}</strong>
-        <span class="pill">${formatDate(row[COLUMN_DATE])}</span>
+    <article class="record-item">
+      <div class="record-item-head">
+        <strong>${formatDate(row[COLUMN_DATE])}</strong>
+        <span>${escapeHtml(row[COLUMN_CUSTOMER])}</span>
       </div>
-      <p class="record-product">${escapeHtml(row[COLUMN_PRODUCT])}</p>
-      <div class="record-grid">
-        <span><b>數量</b>${formatNumber(row[COLUMN_QTY])}</span>
-        <span><b>原幣單價</b>${formatNumber(row[COLUMN_PRICE])}</span>
-        <span><b>總額</b>${formatCurrency(row[COLUMN_AMOUNT])}</span>
-        <span><b>人員姓名</b>${escapeHtml(row[COLUMN_OWNER])}</span>
-        <span><b>區域名稱</b>${escapeHtml(row[COLUMN_AREA])}</span>
-      </div>
+      <p class="record-item-product">${escapeHtml(row[COLUMN_PRODUCT])}</p>
+      <p class="record-item-meta">數量 ${formatNumber(row[COLUMN_QTY])} / 單價 ${formatNumber(row[COLUMN_PRICE])}</p>
+      <p class="record-item-meta">總額 ${formatCurrency(row[COLUMN_AMOUNT])}</p>
+      <p class="record-item-meta">人員 ${escapeHtml(row[COLUMN_OWNER])} / 區域 ${escapeHtml(row[COLUMN_AREA])}</p>
     </article>
   `).join("");
 }
@@ -369,7 +365,7 @@ function getFilteredRows() {
     .filter((row) => !productKeyword || String(row[COLUMN_PRODUCT] || "").toLowerCase().includes(productKeyword))
     .filter((row) => !ownerKeyword || String(row[COLUMN_OWNER] || "").toLowerCase().includes(ownerKeyword))
     .filter((row) => !areaKeyword || String(row[COLUMN_AREA] || "").toLowerCase().includes(areaKeyword))
-    .sort((a, b) => new Date(b[COLUMN_DATE]) - new Date(a[COLUMN_DATE]));
+    .sort((a, b) => new Date(a[COLUMN_DATE]) - new Date(b[COLUMN_DATE]));
 }
 
 function addDays(dateString, days) {

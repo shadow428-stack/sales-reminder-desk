@@ -237,48 +237,39 @@ input {
   overflow: auto;
 }
 
-.records-card-list {
+.records-list {
   display: none;
   margin-top: 16px;
   gap: 12px;
 }
 
-.record-card {
-  padding: 14px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: #fff;
+.record-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
 }
 
-.record-card-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 10px;
+.record-item:first-child {
+  padding-top: 0;
 }
 
-.record-product {
-  margin: 10px 0 0;
-  font-weight: 600;
+.record-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
-.record-grid {
+.record-item-head {
   display: grid;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 4px;
 }
 
-.record-grid span {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding-top: 8px;
-  border-top: 1px solid var(--line);
-}
-
-.record-grid b {
-  color: var(--muted);
+.record-item-product {
+  margin: 8px 0 0;
   font-weight: 600;
+}
+
+.record-item-meta {
+  margin: 6px 0 0;
+  color: var(--muted);
 }
 
 table {
@@ -351,7 +342,7 @@ thead th {
     display: none;
   }
 
-  .records-card-list {
+  .records-list {
     display: grid;
   }
 }
