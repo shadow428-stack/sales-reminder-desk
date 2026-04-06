@@ -21,6 +21,10 @@ body {
   background: linear-gradient(180deg, #f7f3ec 0%, #f1ebe2 100%);
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 button, input {
   font: inherit;
 }
@@ -66,6 +70,20 @@ h2 {
   gap: 10px;
   flex-wrap: wrap;
   justify-content: flex-end;
+}
+
+.user-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .file-button,

@@ -28,6 +28,7 @@ const modalBackdrop = document.querySelector("#modalBackdrop");
 const importStatus = document.querySelector("#importStatus");
 const loginToggleBtn = document.querySelector("#loginToggleBtn");
 const importToggleBtn = document.querySelector("#importToggleBtn");
+const userBadge = document.querySelector("#userBadge");
 const authCloseBtn = document.querySelector("#authCloseBtn");
 const importCloseBtn = document.querySelector("#importCloseBtn");
 const loginForm = document.querySelector("#loginForm");
@@ -72,6 +73,8 @@ async function bootstrap() {
       adminImportCard.hidden = true;
       loginToggleBtn.hidden = false;
       importToggleBtn.hidden = true;
+      userBadge.hidden = true;
+      userBadge.textContent = "";
       logoutBtn.hidden = true;
       dataset = { sourceLabel: "", importedAt: "", importedBy: "", rows: [] };
       importStatus.textContent = "請先登入系統。";
@@ -81,6 +84,8 @@ async function bootstrap() {
 
     authCard.hidden = true;
     loginToggleBtn.hidden = true;
+    userBadge.hidden = false;
+    userBadge.textContent = user.email || "";
     logoutBtn.hidden = false;
     await refreshSession();
     await loadDataset();
@@ -94,6 +99,7 @@ function bindEvents() {
   authCloseBtn.addEventListener("click", closePanels);
   importCloseBtn.addEventListener("click", closePanels);
   modalBackdrop.addEventListener("click", closePanels);
+  document.addEventListener("keydown", handleGlobalKeydown);
   loginForm.addEventListener("submit", handleLogin);
   logoutBtn.addEventListener("click", handleLogout);
   excelInput.addEventListener("change", handleImport);
@@ -162,6 +168,7 @@ function toggleAuthPanel() {
   if (shouldOpen) {
     authCard.hidden = false;
     modalBackdrop.hidden = false;
+    document.body.classList.add("modal-open");
     emailInput.focus();
   }
 }
@@ -173,6 +180,7 @@ function toggleImportPanel() {
   if (shouldOpen) {
     adminImportCard.hidden = false;
     modalBackdrop.hidden = false;
+    document.body.classList.add("modal-open");
   }
 }
 
@@ -180,6 +188,13 @@ function closePanels() {
   authCard.hidden = true;
   adminImportCard.hidden = true;
   modalBackdrop.hidden = true;
+  document.body.classList.remove("modal-open");
+}
+
+function handleGlobalKeydown(event) {
+  if (event.key === "Escape" && (!authCard.hidden || !adminImportCard.hidden)) {
+    closePanels();
+  }
 }
 
 async function loadDataset() {
