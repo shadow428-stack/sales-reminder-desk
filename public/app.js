@@ -25,6 +25,8 @@ let dataset = { sourceLabel: "", importedAt: "", importedBy: "", rows: [] };
 const authCard = document.querySelector("#authCard");
 const adminImportCard = document.querySelector("#adminImportCard");
 const importStatus = document.querySelector("#importStatus");
+const loginToggleBtn = document.querySelector("#loginToggleBtn");
+const importToggleBtn = document.querySelector("#importToggleBtn");
 const loginForm = document.querySelector("#loginForm");
 const emailInput = document.querySelector("#emailInput");
 const passwordInput = document.querySelector("#passwordInput");
@@ -63,8 +65,10 @@ async function bootstrap() {
     currentUser = user;
     if (!user) {
       currentRole = "viewer";
-      authCard.hidden = false;
+      authCard.hidden = true;
       adminImportCard.hidden = true;
+      loginToggleBtn.hidden = false;
+      importToggleBtn.hidden = true;
       logoutBtn.hidden = true;
       dataset = { sourceLabel: "", importedAt: "", importedBy: "", rows: [] };
       importStatus.textContent = "請先登入系統。";
@@ -73,6 +77,7 @@ async function bootstrap() {
     }
 
     authCard.hidden = true;
+    loginToggleBtn.hidden = true;
     logoutBtn.hidden = false;
     await refreshSession();
     await loadDataset();
@@ -81,6 +86,8 @@ async function bootstrap() {
 }
 
 function bindEvents() {
+  loginToggleBtn.addEventListener("click", toggleAuthPanel);
+  importToggleBtn.addEventListener("click", toggleImportPanel);
   loginForm.addEventListener("submit", handleLogin);
   logoutBtn.addEventListener("click", handleLogout);
   excelInput.addEventListener("change", handleImport);
@@ -122,12 +129,15 @@ async function handleLogin(event) {
     await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
     loginMessage.textContent = "";
     loginForm.reset();
+    authCard.hidden = true;
   } catch (error) {
     loginMessage.textContent = `登入失敗：${error.message}`;
   }
 }
 
 async function handleLogout() {
+  authCard.hidden = true;
+  adminImportCard.hidden = true;
   await signOut(auth);
 }
 
@@ -135,7 +145,26 @@ async function refreshSession() {
   const response = await fetchWithAuth("/api/session");
   const session = await response.json();
   currentRole = session.role;
-  adminImportCard.hidden = currentRole !== "admin";
+  importToggleBtn.hidden = currentRole !== "admin";
+  if (currentRole !== "admin") {
+    adminImportCard.hidden = true;
+  }
+}
+
+function toggleAuthPanel() {
+  authCard.hidden = !authCard.hidden;
+  if (!authCard.hidden) {
+    adminImportCard.hidden = true;
+    emailInput.focus();
+  }
+}
+
+function toggleImportPanel() {
+  if (currentRole !== "admin") return;
+  adminImportCard.hidden = !adminImportCard.hidden;
+  if (!adminImportCard.hidden) {
+    authCard.hidden = true;
+  }
 }
 
 async function loadDataset() {

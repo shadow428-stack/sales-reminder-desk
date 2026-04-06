@@ -65,6 +65,7 @@ h2 {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .file-button,
@@ -96,6 +97,11 @@ button {
   box-shadow: var(--shadow);
   padding: 18px;
   margin-top: 18px;
+}
+
+.utility-panel {
+  max-width: 460px;
+  margin-left: auto;
 }
 
 .auth-card,
@@ -335,5 +341,10 @@ thead th {
 
   .sheet-tab {
     padding: 13px 12px;
+  }
+
+  .utility-panel {
+    max-width: none;
+    margin-left: 0;
   }
 }

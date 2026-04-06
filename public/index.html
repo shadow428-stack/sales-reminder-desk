@@ -15,11 +15,13 @@
         <p class="intro">登入後可查詢銷售紀錄，並依 Excel 匯入資料查看重複回購客戶的週期提醒。</p>
       </div>
       <div class="top-actions">
+        <button id="loginToggleBtn" class="ghost" type="button">登入</button>
+        <button id="importToggleBtn" class="ghost" type="button" hidden>匯入資料</button>
         <button id="logoutBtn" class="ghost" type="button" hidden>登出</button>
       </div>
     </header>
 
-    <section class="auth-card" id="authCard">
+    <section class="auth-card utility-panel" id="authCard" hidden>
       <div>
         <p class="section-label">Sign In</p>
         <h2>登入系統</h2>
@@ -39,7 +41,7 @@
       </form>
     </section>
 
-    <section class="import-card" id="adminImportCard" hidden>
+    <section class="import-card utility-panel" id="adminImportCard" hidden>
       <div>
         <p class="section-label">Import</p>
         <h2>管理者資料匯入</h2>
