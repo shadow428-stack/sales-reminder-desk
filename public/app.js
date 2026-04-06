@@ -43,6 +43,7 @@ const productFilter = document.querySelector("#productFilter");
 const ownerFilter = document.querySelector("#ownerFilter");
 const areaFilter = document.querySelector("#areaFilter");
 const recordsTableBody = document.querySelector("#recordsTableBody");
+const recordsCardList = document.querySelector("#recordsCardList");
 
 const tabButtons = Array.from(document.querySelectorAll("[data-tab-target]"));
 const tabPanels = Array.from(document.querySelectorAll("[data-tab-panel]"));
@@ -296,7 +297,7 @@ function buildReminderItem(rows, selectedMonth) {
 
 function renderRecords() {
   if (!currentUser) {
-    recordsTableBody.innerHTML = '<tr><td colspan="8"><div class="empty-state">登入後即可查詢銷售紀錄。</div></td></tr>';
+    setRecordsEmptyState("登入後即可查詢銷售紀錄。");
     return;
   }
 
@@ -309,13 +310,13 @@ function renderRecords() {
     Boolean(areaFilter.value.trim());
 
   if (!hasQuery) {
-    recordsTableBody.innerHTML = '<tr><td colspan="8"><div class="empty-state">請先輸入任一查詢條件，再顯示銷售紀錄。</div></td></tr>';
+    setRecordsEmptyState("請先輸入任一查詢條件，再顯示銷售紀錄。");
     return;
   }
 
   const rows = getFilteredRows();
   if (!rows.length) {
-    recordsTableBody.innerHTML = '<tr><td colspan="8"><div class="empty-state">查無符合條件的資料。</div></td></tr>';
+    setRecordsEmptyState("查無符合條件的資料。");
     return;
   }
 
@@ -331,6 +332,28 @@ function renderRecords() {
       <td>${escapeHtml(row[COLUMN_AREA])}</td>
     </tr>
   `).join("");
+
+  recordsCardList.innerHTML = rows.map((row) => `
+    <article class="record-card">
+      <div class="record-card-head">
+        <strong>${escapeHtml(row[COLUMN_CUSTOMER])}</strong>
+        <span class="pill">${formatDate(row[COLUMN_DATE])}</span>
+      </div>
+      <p class="record-product">${escapeHtml(row[COLUMN_PRODUCT])}</p>
+      <div class="record-grid">
+        <span><b>數量</b>${formatNumber(row[COLUMN_QTY])}</span>
+        <span><b>原幣單價</b>${formatNumber(row[COLUMN_PRICE])}</span>
+        <span><b>總額</b>${formatCurrency(row[COLUMN_AMOUNT])}</span>
+        <span><b>人員姓名</b>${escapeHtml(row[COLUMN_OWNER])}</span>
+        <span><b>區域名稱</b>${escapeHtml(row[COLUMN_AREA])}</span>
+      </div>
+    </article>
+  `).join("");
+}
+
+function setRecordsEmptyState(message) {
+  recordsTableBody.innerHTML = `<tr><td colspan="8"><div class="empty-state">${message}</div></td></tr>`;
+  recordsCardList.innerHTML = `<div class="empty-state">${message}</div>`;
 }
 
 function getFilteredRows() {

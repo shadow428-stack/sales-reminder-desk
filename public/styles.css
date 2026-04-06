@@ -237,6 +237,50 @@ input {
   overflow: auto;
 }
 
+.records-card-list {
+  display: none;
+  margin-top: 16px;
+  gap: 12px;
+}
+
+.record-card {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.record-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.record-product {
+  margin: 10px 0 0;
+  font-weight: 600;
+}
+
+.record-grid {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.record-grid span {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.record-grid b {
+  color: var(--muted);
+  font-weight: 600;
+}
+
 table {
   width: 100%;
   min-width: 980px;
@@ -301,5 +345,13 @@ thead th {
 
   .sheet-tab {
     padding: 13px 12px;
+  }
+
+  .table-wrap {
+    display: none;
+  }
+
+  .records-card-list {
+    display: grid;
   }
 }
