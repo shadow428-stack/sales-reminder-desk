@@ -415,7 +415,7 @@ function getFilteredRows() {
     .filter((row) => !productKeyword || String(row[COLUMN_PRODUCT] || "").toLowerCase().includes(productKeyword))
     .filter((row) => !ownerKeyword || String(row[COLUMN_OWNER] || "").toLowerCase().includes(ownerKeyword))
     .filter((row) => !areaKeyword || String(row[COLUMN_AREA] || "").toLowerCase().includes(areaKeyword))
-    .sort((a, b) => new Date(a[COLUMN_DATE]) - new Date(b[COLUMN_DATE]));
+    .sort((a, b) => new Date(b[COLUMN_DATE]) - new Date(a[COLUMN_DATE]));
 }
 
 function addDays(dateString, days) {
