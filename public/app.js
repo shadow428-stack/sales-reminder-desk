@@ -89,6 +89,7 @@ async function bootstrap() {
     logoutBtn.hidden = false;
     await refreshSession();
     await loadDataset();
+    updateImportStatus();
     render();
   });
 }
@@ -221,7 +222,7 @@ async function handleImport(event) {
     const payload = await response.json();
     if (!response.ok) throw new Error(payload.message || "匯入失敗");
     dataset = payload.dataset;
-    importStatus.textContent = payload.message;
+    updateImportStatus();
     render();
   } catch (error) {
     importStatus.textContent = error.message;
@@ -242,8 +243,20 @@ async function fetchWithAuth(url, options = {}) {
 }
 
 function render() {
+  updateImportStatus();
   renderReminders();
   renderRecords();
+}
+
+function updateImportStatus() {
+  if (!currentUser) {
+    importStatus.textContent = "請先登入系統。";
+    return;
+  }
+
+  importStatus.textContent = dataset.sourceLabel
+    ? `匯入時間：${formatDateTime(dataset.importedAt)}`
+    : "目前尚未匯入資料。";
 }
 
 function renderReminders() {

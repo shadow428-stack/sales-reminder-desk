@@ -153,6 +153,24 @@ button {
   margin-top: 18px;
 }
 
+.import-card--compact {
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+}
+
+.import-card--compact .section-label,
+.import-card--compact h2 {
+  margin: 0;
+}
+
+.import-card--compact .import-status {
+  margin-left: auto;
+  min-width: 260px;
+  padding: 10px 14px;
+}
+
 .auth-card,
 .import-card {
   display: grid;
@@ -410,6 +428,7 @@ thead th {
   .brand-lockup,
   .auth-card,
   .import-card,
+  .import-card--compact,
   .filters,
   .reminder-filters,
   .primary-filters,
@@ -435,6 +454,11 @@ thead th {
 
   .top-actions {
     width: 100%;
+  }
+
+  .import-card--compact .import-status {
+    margin-left: 0;
+    min-width: 0;
   }
 
   .file-button,
