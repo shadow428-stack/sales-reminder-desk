@@ -1,15 +1,19 @@
 :root {
-  --bg: #f5f1ea;
-  --panel: #fffdfa;
-  --ink: #1f2933;
-  --muted: #6b7280;
-  --line: #e7dfd3;
-  --accent: #9a5a2e;
-  --accent-soft: #f2e5d9;
-  --danger: #b42318;
-  --warn: #b7791f;
-  --ok: #2d6a4f;
-  --shadow: 0 14px 30px rgba(32, 24, 16, 0.08);
+  --bg: #dff1f2;
+  --bg-deep: #c9e8e9;
+  --panel: rgba(255, 255, 255, 0.88);
+  --panel-strong: #ffffff;
+  --ink: #11454a;
+  --muted: #52757a;
+  --line: rgba(61, 138, 144, 0.18);
+  --accent: #35adb2;
+  --accent-deep: #1c8b91;
+  --accent-soft: #ebf9fa;
+  --accent-quiet: #cfeef0;
+  --danger: #d45b64;
+  --warn: #d59c2f;
+  --ok: #208b73;
+  --shadow: 0 20px 46px rgba(20, 95, 102, 0.12);
 }
 
 * { box-sizing: border-box; }
@@ -18,7 +22,9 @@ body {
   margin: 0;
   font-family: "Segoe UI Variable", "Noto Sans TC", "PingFang TC", sans-serif;
   color: var(--ink);
-  background: linear-gradient(180deg, #f7f3ec 0%, #f1ebe2 100%);
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.74), transparent 28%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
 }
 
 body.modal-open {
@@ -43,7 +49,36 @@ button, input {
 
 .topbar {
   grid-template-columns: 1fr auto;
-  align-items: end;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.brand-mark {
+  width: 88px;
+  height: 88px;
+  display: grid;
+  place-items: center;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(61, 138, 144, 0.16);
+  box-shadow: var(--shadow);
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  width: 58px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.brand-copy {
+  min-width: 0;
 }
 
 .eyebrow,
@@ -52,7 +87,7 @@ button, input {
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 0.72rem;
-  color: var(--muted);
+  color: var(--accent-deep);
 }
 
 h1,
@@ -63,6 +98,7 @@ h2 {
 .intro {
   margin: 10px 0 0;
   color: var(--muted);
+  max-width: 700px;
 }
 
 .top-actions {
@@ -77,9 +113,9 @@ h2 {
   align-items: center;
   padding: 10px 14px;
   border-radius: 999px;
-  background: #fff;
-  border: 1px solid var(--line);
-  color: var(--muted);
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(61, 138, 144, 0.2);
+  color: var(--accent-deep);
   max-width: 260px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -91,15 +127,17 @@ button {
   border: none;
   border-radius: 999px;
   padding: 11px 16px;
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
   color: #fff;
   cursor: pointer;
+  box-shadow: 0 12px 24px rgba(28, 139, 145, 0.18);
 }
 
 .ghost {
-  background: #fff;
-  color: var(--accent);
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--accent-deep);
+  border: 1px solid rgba(61, 138, 144, 0.18);
+  box-shadow: none;
 }
 
 .file-button input {
@@ -110,7 +148,7 @@ button {
 .import-card,
 .panel {
   background: var(--panel);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(61, 138, 144, 0.12);
   border-radius: 20px;
   box-shadow: var(--shadow);
   padding: 18px;
@@ -128,7 +166,7 @@ button {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(31, 41, 51, 0.28);
+  background: rgba(17, 69, 74, 0.24);
   backdrop-filter: blur(4px);
   z-index: 40;
 }
@@ -146,10 +184,10 @@ button {
   display: grid;
   gap: 16px;
   padding: 22px;
-  background: var(--panel);
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(61, 138, 144, 0.14);
   border-radius: 24px;
-  box-shadow: 0 24px 60px rgba(32, 24, 16, 0.18);
+  box-shadow: 0 24px 60px rgba(17, 69, 74, 0.2);
   z-index: 50;
 }
 
@@ -165,11 +203,12 @@ button {
   height: 40px;
   padding: 0;
   border-radius: 999px;
-  background: #fff;
-  color: var(--accent);
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--accent-deep);
+  border: 1px solid rgba(61, 138, 144, 0.16);
   font-size: 1.2rem;
   line-height: 1;
+  box-shadow: none;
 }
 
 .login-form {
@@ -184,8 +223,8 @@ button {
 .import-status {
   padding: 14px;
   border-radius: 16px;
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: linear-gradient(135deg, rgba(53, 173, 178, 0.14), rgba(28, 139, 145, 0.08));
+  color: var(--accent-deep);
   line-height: 1.6;
 }
 
@@ -197,8 +236,8 @@ button {
   gap: 8px;
   margin-top: 18px;
   padding: 8px;
-  background: rgba(255, 253, 250, 0.92);
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(61, 138, 144, 0.16);
   border-radius: 18px;
   box-shadow: var(--shadow);
   backdrop-filter: blur(12px);
@@ -207,16 +246,17 @@ button {
 .sheet-tab {
   flex: 1;
   min-width: 0;
-  border: 1px solid var(--line);
-  background: #fff;
+  border: 1px solid rgba(61, 138, 144, 0.14);
+  background: rgba(255, 255, 255, 0.82);
   color: var(--muted);
   padding: 12px 14px;
+  box-shadow: none;
 }
 
 .sheet-tab.is-active {
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
   color: #fff;
-  border-color: var(--accent);
+  border-color: transparent;
 }
 
 .tab-panel[hidden] {
@@ -240,9 +280,9 @@ button {
 
 .advanced-filters {
   margin-top: 12px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(61, 138, 144, 0.14);
   border-radius: 16px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .advanced-filters summary {
@@ -274,10 +314,11 @@ label {
 
 input {
   width: 100%;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(61, 138, 144, 0.18);
   border-radius: 12px;
   padding: 11px 12px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
 }
 
 .stack-list {
@@ -288,9 +329,9 @@ input {
 
 .reminder-card {
   padding: 14px;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(61, 138, 144, 0.14);
   border-radius: 16px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.84);
 }
 
 .reminder-card h3,
@@ -311,8 +352,8 @@ input {
   padding: 5px 10px;
   border-radius: 999px;
   font-size: 0.82rem;
-  background: #f6efe6;
-  color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-deep);
 }
 
 .pill.danger {
@@ -333,6 +374,9 @@ input {
 .table-wrap {
   margin-top: 16px;
   overflow: auto;
+  border: 1px solid rgba(61, 138, 144, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.8);
 }
 
 table {
@@ -345,25 +389,27 @@ th,
 td {
   text-align: left;
   padding: 12px 10px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid rgba(61, 138, 144, 0.12);
   vertical-align: top;
 }
 
 thead th {
-  color: var(--muted);
+  color: var(--accent-deep);
   font-weight: 600;
+  background: rgba(53, 173, 178, 0.08);
 }
 
 .empty-state {
   padding: 20px;
   text-align: center;
   color: var(--muted);
-  border: 1px dashed var(--line);
+  border: 1px dashed rgba(61, 138, 144, 0.18);
   border-radius: 16px;
 }
 
 @media (max-width: 1100px) {
   .topbar,
+  .brand-lockup,
   .auth-card,
   .import-card,
   .filters,
@@ -377,6 +423,17 @@ thead th {
 @media (max-width: 720px) {
   .app-shell {
     padding: 16px 12px 108px;
+  }
+
+  .brand-mark {
+    width: 72px;
+    height: 72px;
+    border-radius: 22px;
+  }
+
+  .brand-logo {
+    width: 48px;
+    height: 64px;
   }
 
   .top-actions {
